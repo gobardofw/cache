@@ -63,21 +63,21 @@ func (c *redisCache) Set(key string, value interface{}) bool {
 }
 
 // Get item from cache
-func (c *redisCache) Get(key string) (interface{}, bool) {
+func (c *redisCache) Get(key string) interface{} {
 	if value, err := c.client().Do("GET", c.prefixer(key)); err == nil {
-		return value, true
+		return value
 	}
-	return nil, false
+	return nil
 }
 
 // Pull item from cache and remove it
-func (c *redisCache) Pull(key string) (interface{}, bool) {
+func (c *redisCache) Pull(key string) interface{} {
 	if value, err := c.client().Do("GET", c.prefixer(key)); err == nil {
 		if _, err = c.client().Do("DEL", c.prefixer(key)); err == nil {
-			return value, true
+			return value
 		}
 	}
-	return nil, false
+	return nil
 }
 
 // Check if item exists in cache
@@ -95,148 +95,148 @@ func (c *redisCache) Forget(key string) bool {
 }
 
 // TTL get cache item ttl
-func (c *redisCache) TTL(key string) (time.Duration, bool) {
+func (c *redisCache) TTL(key string) time.Duration {
 	ttl, err := redis.Int(c.client().Do("TTL", c.prefixer(key)))
 	if err != nil || ttl == -1 || ttl == -2 {
-		return 0, false
+		return 0
 	}
 
-	return time.Duration(ttl) * time.Second, true
+	return time.Duration(ttl) * time.Second
 }
 
 // Bool parse dependency as boolean
-func (c *redisCache) Bool(key string, fallback bool) (bool, bool) {
+func (c *redisCache) Bool(key string, fallback bool) bool {
 	val, err := redis.Bool(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return val, true
+		return val
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int parse dependency as int
-func (c *redisCache) Int(key string, fallback int) (int, bool) {
+func (c *redisCache) Int(key string, fallback int) int {
 	val, err := redis.Int64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return int(val), true
+		return int(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int8 parse dependency as int8
-func (c *redisCache) Int8(key string, fallback int8) (int8, bool) {
+func (c *redisCache) Int8(key string, fallback int8) int8 {
 	val, err := redis.Int64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return int8(val), true
+		return int8(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int16 parse dependency as int16
-func (c *redisCache) Int16(key string, fallback int16) (int16, bool) {
+func (c *redisCache) Int16(key string, fallback int16) int16 {
 	val, err := redis.Int64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return int16(val), true
+		return int16(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int32 parse dependency as int32
-func (c *redisCache) Int32(key string, fallback int32) (int32, bool) {
+func (c *redisCache) Int32(key string, fallback int32) int32 {
 	val, err := redis.Int64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return int32(val), true
+		return int32(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int64 parse dependency as int64
-func (c *redisCache) Int64(key string, fallback int64) (int64, bool) {
+func (c *redisCache) Int64(key string, fallback int64) int64 {
 	val, err := redis.Int64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return val, true
+		return val
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt parse dependency as uint
-func (c *redisCache) UInt(key string, fallback uint) (uint, bool) {
+func (c *redisCache) UInt(key string, fallback uint) uint {
 	val, err := redis.Uint64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return uint(val), true
+		return uint(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt8 parse dependency as uint8
-func (c *redisCache) UInt8(key string, fallback uint8) (uint8, bool) {
+func (c *redisCache) UInt8(key string, fallback uint8) uint8 {
 	val, err := redis.Uint64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return uint8(val), true
+		return uint8(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt16 parse dependency as uint16
-func (c *redisCache) UInt16(key string, fallback uint16) (uint16, bool) {
+func (c *redisCache) UInt16(key string, fallback uint16) uint16 {
 	val, err := redis.Uint64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return uint16(val), true
+		return uint16(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt32 parse dependency as uint32
-func (c *redisCache) UInt32(key string, fallback uint32) (uint32, bool) {
+func (c *redisCache) UInt32(key string, fallback uint32) uint32 {
 	val, err := redis.Uint64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return uint32(val), true
+		return uint32(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt64 parse dependency as uint64
-func (c *redisCache) UInt64(key string, fallback uint64) (uint64, bool) {
+func (c *redisCache) UInt64(key string, fallback uint64) uint64 {
 	val, err := redis.Uint64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return uint64(val), true
+		return uint64(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Float32 parse dependency as float64
-func (c *redisCache) Float32(key string, fallback float32) (float32, bool) {
+func (c *redisCache) Float32(key string, fallback float32) float32 {
 	val, err := redis.Float64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return float32(val), true
+		return float32(val)
 	}
-	return fallback, false
+	return fallback
 }
 
 // Float64 parse dependency as float64
-func (c *redisCache) Float64(key string, fallback float64) (float64, bool) {
+func (c *redisCache) Float64(key string, fallback float64) float64 {
 	val, err := redis.Float64(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return val, true
+		return val
 	}
-	return fallback, false
+	return fallback
 }
 
 // String parse dependency as string
-func (c *redisCache) String(key string, fallback string) (string, bool) {
+func (c *redisCache) String(key string, fallback string) string {
 	val, err := redis.String(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return val, true
+		return val
 	}
-	return fallback, false
+	return fallback
 }
 
 // Bytes parse dependency as bytes array
-func (c *redisCache) Bytes(key string, fallback []byte) ([]byte, bool) {
+func (c *redisCache) Bytes(key string, fallback []byte) []byte {
 	val, err := redis.Bytes(c.client().Do("GET", c.prefixer(key)))
 	if err == nil {
-		return val, true
+		return val
 	}
-	return fallback, false
+	return fallback
 }
 
 // Increment numeric item in cache

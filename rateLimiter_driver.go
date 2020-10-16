@@ -22,8 +22,7 @@ func (limiter *rateLimiterDriver) init(key string, maxAttempts uint32, ttl time.
 
 // Hit decrease the allowed times
 func (limiter *rateLimiterDriver) Hit() {
-	old, _ := limiter.Cache.Int(limiter.Key, 0)
-	if old > 0 {
+	if limiter.Cache.Int(limiter.Key, 0) > 0 {
 		limiter.Cache.Decrement(limiter.Key)
 	}
 }
@@ -42,13 +41,12 @@ func (limiter *rateLimiterDriver) Reset() {
 
 // MustLock check if rate limiter must lock access
 func (limiter *rateLimiterDriver) MustLock() bool {
-	old, _ := limiter.Cache.Int(limiter.Key, 0)
-	return limiter.Cache.Exists(limiter.Key) && old <= 0
+	return limiter.Cache.Exists(limiter.Key) && limiter.Cache.Int(limiter.Key, 0) <= 0
 }
 
 // TotalAttempts get user attempts count
 func (limiter *rateLimiterDriver) TotalAttempts() uint32 {
-	old, _ := limiter.Cache.Int(limiter.Key, 0)
+	old := limiter.Cache.Int(limiter.Key, 0)
 	if old < 0 {
 		old = 0
 	}
@@ -60,7 +58,7 @@ func (limiter *rateLimiterDriver) TotalAttempts() uint32 {
 
 // RetriesLeft get user retries left
 func (limiter *rateLimiterDriver) RetriesLeft() uint32 {
-	old, _ := limiter.Cache.Int(limiter.Key, 0)
+	old := limiter.Cache.Int(limiter.Key, 0)
 	if old < 0 {
 		old = 0
 	}
@@ -72,9 +70,8 @@ func (limiter *rateLimiterDriver) RetriesLeft() uint32 {
 
 // AvailableIn get time until unlock
 func (limiter *rateLimiterDriver) AvailableIn() time.Duration {
-	ttl, ok := limiter.Cache.TTL(limiter.Key)
-	if !ok {
-		return 0
+	if limiter.Cache.Exists(limiter.Key) {
+		return limiter.Cache.TTL(limiter.Key)
 	}
-	return ttl
+	return 0
 }

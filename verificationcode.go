@@ -11,7 +11,7 @@ type VerificationCode interface {
 	// Clear clear code
 	Clear()
 	// Get get code
-	Get() (string, bool)
+	Get() string
 	// Exists check if code exists
 	Exists() bool
 }

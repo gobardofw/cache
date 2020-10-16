@@ -227,22 +227,22 @@ func (c *fileCache) Set(key string, value interface{}) bool {
 }
 
 // Get item from cache
-func (c *fileCache) Get(key string) (interface{}, bool) {
+func (c *fileCache) Get(key string) interface{} {
 	rec, exists := c.read(key)
 	if exists {
-		return rec.Data, true
+		return rec.Data
 	}
-	return nil, false
+	return nil
 }
 
 // Pull item from cache and remove it
-func (c *fileCache) Pull(key string) (interface{}, bool) {
+func (c *fileCache) Pull(key string) interface{} {
 	defer c.delete(key)
 	rec, exists := c.read(key)
 	if exists {
-		return rec.Data, true
+		return rec.Data
 	}
-	return nil, false
+	return nil
 }
 
 // Check if item exists in cache
@@ -257,177 +257,177 @@ func (c *fileCache) Forget(key string) bool {
 }
 
 // TTL get cache item ttl
-func (c *fileCache) TTL(key string) (time.Duration, bool) {
+func (c *fileCache) TTL(key string) time.Duration {
 	rec, exists := c.read(key)
 	if exists {
-		return time.Now().UTC().Sub(rec.TTL.UTC()), true
+		return time.Now().UTC().Sub(rec.TTL.UTC())
 	}
-	return 0, false
+	return 0
 }
 
 // Bool parse dependency as boolean
-func (c *fileCache) Bool(key string, fallback bool) (bool, bool) {
+func (c *fileCache) Bool(key string, fallback bool) bool {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.Data.(bool); ok {
-			return res, true
+			return res
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int parse dependency as int
-func (c *fileCache) Int(key string, fallback int) (int, bool) {
+func (c *fileCache) Int(key string, fallback int) int {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsInt64(); ok {
-			return int(res), true
+			return int(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int8 parse dependency as int8
-func (c *fileCache) Int8(key string, fallback int8) (int8, bool) {
+func (c *fileCache) Int8(key string, fallback int8) int8 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsInt64(); ok {
-			return int8(res), true
+			return int8(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int16 parse dependency as int16
-func (c *fileCache) Int16(key string, fallback int16) (int16, bool) {
+func (c *fileCache) Int16(key string, fallback int16) int16 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsInt64(); ok {
-			return int16(res), true
+			return int16(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int32 parse dependency as int32
-func (c *fileCache) Int32(key string, fallback int32) (int32, bool) {
+func (c *fileCache) Int32(key string, fallback int32) int32 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsInt64(); ok {
-			return int32(res), true
+			return int32(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Int64 parse dependency as int64
-func (c *fileCache) Int64(key string, fallback int64) (int64, bool) {
+func (c *fileCache) Int64(key string, fallback int64) int64 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsInt64(); ok {
-			return res, true
+			return res
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt parse dependency as uint
-func (c *fileCache) UInt(key string, fallback uint) (uint, bool) {
+func (c *fileCache) UInt(key string, fallback uint) uint {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsUint64(); ok {
-			return uint(res), true
+			return uint(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt8 parse dependency as uint8
-func (c *fileCache) UInt8(key string, fallback uint8) (uint8, bool) {
+func (c *fileCache) UInt8(key string, fallback uint8) uint8 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsUint64(); ok {
-			return uint8(res), true
+			return uint8(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt16 parse dependency as uint16
-func (c *fileCache) UInt16(key string, fallback uint16) (uint16, bool) {
+func (c *fileCache) UInt16(key string, fallback uint16) uint16 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsUint64(); ok {
-			return uint16(res), true
+			return uint16(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt32 parse dependency as uint32
-func (c *fileCache) UInt32(key string, fallback uint32) (uint32, bool) {
+func (c *fileCache) UInt32(key string, fallback uint32) uint32 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsUint64(); ok {
-			return uint32(res), true
+			return uint32(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // UInt64 parse dependency as uint64
-func (c *fileCache) UInt64(key string, fallback uint64) (uint64, bool) {
+func (c *fileCache) UInt64(key string, fallback uint64) uint64 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsUint64(); ok {
-			return uint64(res), true
+			return uint64(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Float32 parse dependency as float64
-func (c *fileCache) Float32(key string, fallback float32) (float32, bool) {
+func (c *fileCache) Float32(key string, fallback float32) float32 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsFloat64(); ok {
-			return float32(res), true
+			return float32(res)
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Float64 parse dependency as float64
-func (c *fileCache) Float64(key string, fallback float64) (float64, bool) {
+func (c *fileCache) Float64(key string, fallback float64) float64 {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.ParseAsFloat64(); ok {
-			return res, true
+			return res
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // String parse dependency as string
-func (c *fileCache) String(key string, fallback string) (string, bool) {
+func (c *fileCache) String(key string, fallback string) string {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.Data.(string); ok {
-			return res, true
+			return res
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Bytes parse dependency as bytes array
-func (c *fileCache) Bytes(key string, fallback []byte) ([]byte, bool) {
+func (c *fileCache) Bytes(key string, fallback []byte) []byte {
 	rec, exists := c.read(key)
 	if exists {
 		if res, ok := rec.Data.([]byte); ok {
-			return res, true
+			return res
 		}
 	}
-	return fallback, false
+	return fallback
 }
 
 // Increment numeric item in cache

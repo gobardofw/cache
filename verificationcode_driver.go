@@ -45,7 +45,7 @@ func (vc *vcDriver) Clear() {
 }
 
 // Get get code
-func (vc *vcDriver) Get() (string, bool) {
+func (vc *vcDriver) Get() string {
 	return vc.Cache.String(vc.Key, "")
 }
 
